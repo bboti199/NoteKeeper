@@ -13,7 +13,7 @@ namespace NoteKeeper.DataAccess.Configurations
 
             builder
                 .Property(u => u.Id)
-                .UseIdentityColumn();
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(u => u.UserName)
@@ -36,7 +36,7 @@ namespace NoteKeeper.DataAccess.Configurations
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.ToTable("Users");
+            builder.ToTable("users");
         }
     }
 }

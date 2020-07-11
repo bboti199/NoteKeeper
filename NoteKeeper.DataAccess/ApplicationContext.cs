@@ -17,7 +17,8 @@ namespace NoteKeeper.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new NoteConfiguration());
+            modelBuilder.ApplyConfiguration(new NoteConfiguration(Database));
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

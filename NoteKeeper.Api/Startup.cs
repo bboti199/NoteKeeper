@@ -28,7 +28,9 @@ namespace NoteKeeper.Api
         {
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DevPostgres"));
+                options
+                    .UseNpgsql(Configuration.GetConnectionString("DevPostgres"))
+                    .UseSnakeCaseNamingConvention();
             });
             
             services.AddControllers();
