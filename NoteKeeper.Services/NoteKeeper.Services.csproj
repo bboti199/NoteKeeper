@@ -6,6 +6,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NoteKeeper.DataAccess\NoteKeeper.DataAccess.csproj" />
+      <ProjectReference Include="..\NoteKeeper.Infrastructure\NoteKeeper.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Notes" />
+      <Folder Include="Users" />
     </ItemGroup>
 
 </Project>

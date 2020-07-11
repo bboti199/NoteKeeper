@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteKeeper.DataAccess", "No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteKeeper.Services", "NoteKeeper.Services\NoteKeeper.Services.csproj", "{55CB774D-849B-467E-BA9C-CF6416F437D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteKeeper.Infrastructure", "NoteKeeper.Infrastructure\NoteKeeper.Infrastructure.csproj", "{9B058987-C9DD-4FD7-B74C-BF2B85CFF6F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{55CB774D-849B-467E-BA9C-CF6416F437D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55CB774D-849B-467E-BA9C-CF6416F437D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55CB774D-849B-467E-BA9C-CF6416F437D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B058987-C9DD-4FD7-B74C-BF2B85CFF6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B058987-C9DD-4FD7-B74C-BF2B85CFF6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B058987-C9DD-4FD7-B74C-BF2B85CFF6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B058987-C9DD-4FD7-B74C-BF2B85CFF6F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
