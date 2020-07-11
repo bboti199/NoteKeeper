@@ -23,7 +23,7 @@ namespace NoteKeeper.DataAccess.Configurations
 
             builder
                 .Property(n => n.Id)
-                .UseIdentityColumn();
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(n => n.Title)
