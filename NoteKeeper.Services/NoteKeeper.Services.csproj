@@ -10,8 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Notes" />
-      <Folder Include="Users" />
+      <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     </ItemGroup>
 
 </Project>

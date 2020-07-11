@@ -1,23 +1,22 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NoteKeeper.DataAccess;
 using NoteKeeper.Infrastructure.Interfaces;
 using NoteKeeper.Infrastructure.Security;
+using NoteKeeper.Infrastructure.Utils;
+using NoteKeeper.Services.Auth;
+using NoteKeeper.Services.Auth.Validators;
 
 namespace NoteKeeper.Api
 {
@@ -63,18 +62,23 @@ namespace NoteKeeper.Api
             services.Configure<JwtConfiguration>(Configuration.GetSection("JwtSettings"));
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddSingleton<IAvatarGenerator, AvatarGenerator>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserAccessor, UserAccessor>();
-            
-            services.AddControllers();
+
+            services.AddScoped<IAuthService, AuthService>();
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllers().AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining(typeof(RegisterUserValidator));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 

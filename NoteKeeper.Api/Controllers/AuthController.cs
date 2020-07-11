@@ -1,10 +1,9 @@
 using System;
-using System.Linq;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NoteKeeper.DataAccess.Models;
-using NoteKeeper.Infrastructure.Interfaces;
+using NoteKeeper.Infrastructure.Dto.Auth;
+using NoteKeeper.Services.Auth;
 
 namespace NoteKeeper.Api.Controllers
 {
@@ -12,28 +11,32 @@ namespace NoteKeeper.Api.Controllers
     [Route("/api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IJwtGenerator _jwtGenerator;
-        private readonly IUserAccessor _userAccessor;
+        private readonly IAuthService _authService;
 
-        public AuthController(IJwtGenerator jwtGenerator, IUserAccessor userAccessor)
+        public AuthController(IAuthService authService)
         {
-            _jwtGenerator = jwtGenerator;
-            _userAccessor = userAccessor;
+            _authService = authService;
+        }
+        
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
+        {
+            var response = await _authService.Register(registerUserDto);
+            
+            return Created(new Uri(Request.Path, UriKind.Relative), response);
         }
 
-        [HttpGet]
-        public IActionResult Test()
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            return Ok(_jwtGenerator.GenerateToken(new User {Email = "test@test.com", Id = Guid.NewGuid(), UserName = "johndoe"}));
+            return Ok(await _authService.Login(loginUserDto));
         }
 
         [Authorize]
-        [HttpGet("secret")]
-        public IActionResult Secret()
+        [HttpGet("info")]
+        public async Task<IActionResult> Info()
         {
-            var userId = _userAccessor.GetUserIdFromContext();
-
-            return Ok(userId);
+            return Ok(await _authService.GetUserInfo());
         }
     }
 }
