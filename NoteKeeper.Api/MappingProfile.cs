@@ -1,6 +1,7 @@
 using AutoMapper;
 using NoteKeeper.DataAccess.Models;
 using NoteKeeper.Infrastructure.Dto.Auth;
+using NoteKeeper.Infrastructure.Dto.Notes;
 
 namespace NoteKeeper.Api
 {
@@ -12,7 +13,10 @@ namespace NoteKeeper.Api
             CreateMap<LoginUserDto, User>();
 
             CreateMap<User, UserInfoDto>();
-            
+
+            CreateMap<Note, NoteDisplayDto>();
+            CreateMap<Note, NoteHeaderDto>();
+
         }
     }
 }

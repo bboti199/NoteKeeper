@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using FluentValidation.AspNetCore;
@@ -11,12 +12,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NoteKeeper.DataAccess;
 using NoteKeeper.Infrastructure.Interfaces;
 using NoteKeeper.Infrastructure.Security;
 using NoteKeeper.Infrastructure.Utils;
 using NoteKeeper.Services.Auth;
 using NoteKeeper.Services.Auth.Validators;
+using NoteKeeper.Services.Notes;
 
 namespace NoteKeeper.Api
 {
@@ -67,8 +70,39 @@ namespace NoteKeeper.Api
             services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<INoteService, NoteService>();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "NoteAPI", Version = "v1"});
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                
+                var security = new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            },
+                            UnresolvedReference = true
+                        },
+                        new List<string>()
+                    }
+                };
+                
+                options.AddSecurityRequirement(security);
+            });
 
             services.AddControllers().AddFluentValidation(opt =>
             {
@@ -78,7 +112,17 @@ namespace NoteKeeper.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.RoutePrefix = "";
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Note API V1");
+                });
+            }
 
             app.UseHttpsRedirection();
 

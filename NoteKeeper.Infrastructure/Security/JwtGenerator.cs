@@ -31,7 +31,7 @@ namespace NoteKeeper.Infrastructure.Security
             
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.UtcNow.AddDays(Convert.ToDouble(_jwtConfig.ExpirationDays));
+            var expires = DateTime.Now.AddDays(Convert.ToDouble(_jwtConfig.ExpirationDays));
             
             var token = new JwtSecurityToken(
                 issuer: _jwtConfig.Issuer,
